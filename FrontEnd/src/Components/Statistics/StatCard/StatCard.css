@@ -1,0 +1,45 @@
+.stat-card {
+    height: 130px;
+    width: 75%;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: left;
+    padding-left: 20px;
+}
+
+.stat-card .stat-header span {
+    font-size: 15px;
+}
+
+.stat-card h2 {
+    font-size: 30px;
+    margin-top: 7px;
+    margin-bottom: 3px;
+}
+
+.stat-card p {
+    font-size: 14px;
+}
+
+@media (max-width:380px) {
+    .stat-card {
+        height: 80%;
+        width: 30%;
+        padding: 10px;
+    }
+
+    .stat-card .stat-header span {
+        font-size: 13px;
+    }
+
+    .stat-card h2 {
+        font-size: 19px;
+        margin-bottom: 1px;
+    }
+
+    .stat-card p {
+        font-size: 12px;
+    }
+}

@@ -1,0 +1,14 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.Login {
+    width: 100%;
+    height: 741px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #242531;
+}
