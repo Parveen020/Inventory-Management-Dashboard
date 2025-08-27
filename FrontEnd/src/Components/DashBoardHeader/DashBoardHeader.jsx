@@ -1,5 +1,5 @@
 import React from "react";
-import "./DashboardHeader.css";
+import "./DashBoardHeader.css";
 
 const DashboardHeader = ({ title, showSearch = true, onSearch }) => {
   const handleSearchChange = (e) => {
