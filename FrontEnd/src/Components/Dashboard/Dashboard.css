@@ -107,6 +107,7 @@ hr {
         padding: 15px;
         overflow-y: auto;
         scrollbar-width: none;
+        margin-bottom: 68px;
     }
 
     hr {
