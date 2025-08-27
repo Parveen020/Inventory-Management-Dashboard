@@ -84,7 +84,7 @@ const Sidebar = () => {
       </ul>
 
       <div className="profile">
-        <div className="avatar"></div>
+        <div className="avatars"></div>
         <span>
           {admin.firstName} {admin.lastName}
         </span>

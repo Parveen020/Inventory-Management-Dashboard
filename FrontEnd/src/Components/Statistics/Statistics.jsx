@@ -77,8 +77,11 @@ const Statistics = () => {
               style={{
                 cursor: "grab",
                 flex: "1",
-                minWidth: "200px",
+                minWidth: "100px",
                 transition: "transform 0.2s ease",
+                ...(window.innerWidth >= 1024 && window.innerWidth <= 1440
+                  ? { minWidth: "200px", flex: "0 0 200px" } // styles only for laptop screens
+                  : {}),
               }}
             >
               <StatCard

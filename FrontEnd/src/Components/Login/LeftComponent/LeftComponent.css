@@ -112,16 +112,17 @@ label {
 
 @media (max-width:380px) {
     .leftComponent {
-        width: 100%;
-        height: 90vh;
+        width: 380px;
+        height: 100vh;
         display: flex;
         justify-content: center;
         align-items: center;
-        padding-top: 100px;
+        padding-top: 80px;
     }
 
     .form-box {
         width: 95%;
+
     }
 
     .form-box .form-title {

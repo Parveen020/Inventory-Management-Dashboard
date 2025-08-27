@@ -153,7 +153,7 @@ const Product = () => {
 
           <div className="card">
             <h4>Total Products</h4>
-            <div className="info">
+            <div className="info moreInfo">
               <div className="info1">
                 <p>{inventoryStats.totalProducts || 0}</p>
                 <span>Total items</span>
@@ -167,7 +167,7 @@ const Product = () => {
 
           <div className="card">
             <h4>Top Selling</h4>
-            <div className="info">
+            <div className="info moreInfo">
               <div className="info1">
                 <p>{inventoryStats.topSelling || 0}</p>
                 <span>Last 7 days</span>

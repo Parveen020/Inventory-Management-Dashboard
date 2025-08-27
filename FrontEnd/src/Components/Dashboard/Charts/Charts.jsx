@@ -9,7 +9,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import "./charts.css";
+import "./Charts.css";
 import { AdminContext } from "../../../Context/AdminContext";
 
 const Charts = ({ width, height }) => {
@@ -111,35 +111,36 @@ const Charts = ({ width, height }) => {
       <ResponsiveContainer width={width} height={height}>
         <BarChart
           data={formattedChartData}
-          barSize={15}
+          barSize={window.innerWidth <= 480 ? 7 : 15}
           margin={{
-            top: 20,
-            right: 30,
-            left: 20,
-            bottom: 5,
+            top: window.innerHeight <= 800 ? 5 : 20,
+            right: window.innerWidth <= 480 ? 10 : 30,
+            left: window.innerWidth <= 480 ? -30 : 20,
+            bottom: 10,
           }}
         >
           <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
           <XAxis
             dataKey="name"
-            tick={{ fontSize: 12 }}
+            tick={{ fontSize: window.innerWidth <= 480 ? 10 : 12 }}
             stroke="#666"
-            interval={0} // Show all labels
+            interval={0}
           />
           <YAxis
-            tick={{ fontSize: 12 }}
+            tick={{ fontSize: window.innerWidth <= 480 ? 10 : 12 }}
             stroke="#666"
             tickFormatter={(value) => {
-              if (value >= 1000000) {
-                return `₹${(value / 1000000).toFixed(1)}M`;
-              } else if (value >= 1000) {
-                return `₹${(value / 1000).toFixed(0)}K`;
-              }
+              if (value >= 1000000) return `₹${(value / 1000000).toFixed(1)}M`;
+              else if (value >= 1000) return `₹${(value / 1000).toFixed(0)}K`;
               return `₹${value}`;
             }}
           />
           <Tooltip content={<CustomTooltip />} />
-          <Legend />
+          <Legend
+            wrapperStyle={{
+              fontSize: window.innerWidth <= 480 ? "10px" : "12px",
+            }}
+          />
           <Bar
             dataKey="Purchase"
             fill="#60a5fa"

@@ -9,13 +9,14 @@ import Dashboard from "./Components/Dashboard/Dashboard";
 import IndividualProductPage from "./Components/Product/IndividualProductModal/IndividualProductPage";
 import { useContext } from "react";
 import { AdminContext } from "./Context/AdminContext";
+import "./index.css";
 
 function App() {
   const { admin } = useContext(AdminContext);
   const location = useLocation();
 
   return (
-    <>
+    <div className="app">
       <Routes>
         <Route
           path="/login"
@@ -40,7 +41,7 @@ function App() {
           element={<Navigate to={admin ? location.pathname : "/login"} />}
         />
       </Routes>
-    </>
+    </div>
   );
 }
 

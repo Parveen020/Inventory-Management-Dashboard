@@ -102,8 +102,11 @@ hr {
 
 @media (max-width:380px) {
     .dashboard-container {
-        width: 100vh;
-        margin-bottom: 68px;
+        width: 100%;
+        min-height: auto;
+        padding: 15px;
+        overflow-y: auto;
+        scrollbar-width: none;
     }
 
     hr {
@@ -118,4 +121,9 @@ hr {
     .dashboard-left {
         flex-direction: column-reverse;
     }
+
+    .chart-header h3 {
+        font-size: 18px;
+    }
+
 }
