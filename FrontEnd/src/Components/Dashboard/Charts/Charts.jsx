@@ -9,7 +9,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import "./charts.css";
+import "./Charts.css";
 import { AdminContext } from "../../../Context/AdminContext";
 
 const Charts = ({ width, height }) => {
