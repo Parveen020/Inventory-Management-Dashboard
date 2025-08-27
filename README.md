@@ -105,4 +105,10 @@ npm run dev
 
 ---
 
+📱 Mobile Layout
+
+A fully responsive mobile layout has been built for the entire application as per the provided Figma design.
+
+---
+
 Working Url - https://inventory-management-dashboard-50k8.onrender.com
