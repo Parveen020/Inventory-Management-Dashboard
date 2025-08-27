@@ -108,6 +108,7 @@ npm run dev
 📱 Mobile Layout
 
 A fully responsive mobile layout has been built for the entire application as per the provided Figma design.
+Mobile Screen Size - 380px X 800px
 
 ---
 
