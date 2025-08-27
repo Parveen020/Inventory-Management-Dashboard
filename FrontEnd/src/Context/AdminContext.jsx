@@ -4,7 +4,7 @@ import React, { createContext, useCallback, useEffect, useState } from "react";
 export const AdminContext = createContext(null);
 
 const AdminContextProvider = (props) => {
-  const url = "https://inventory-management-dashboard-backend-o0p5.onrender.com";
+  const url = "http://localhost:4000";
 
   const [admin, setAdmin] = useState(null);
   const [token, setToken] = useState(null);
