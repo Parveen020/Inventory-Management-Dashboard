@@ -10,11 +10,13 @@ import { assets } from "../../assets/assets";
 import Charts from "./Charts/Charts";
 import DashboardHeader from "../DashBoardHeader/DashBoardHeader";
 import Cards from "./Cards/Cards";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { AdminContext } from "../../Context/AdminContext";
 
 const Dashboard = () => {
   const { stats, fetchDashboardStats, type } = useContext(AdminContext);
+  const [draggedItem, setDraggedItem] = useState(null);
+  const [draggedFromColumn, setDraggedFromColumn] = useState(null);
+
   useEffect(() => {
     fetchDashboardStats();
   }, []);
@@ -162,28 +164,70 @@ const Dashboard = () => {
     productCardContent,
   ]);
 
-  const handleDragEnd = useCallback((result) => {
-    if (!result.destination) return;
+  const handleDragStart = useCallback((e, cardId, fromColumn) => {
+    setDraggedItem(cardId);
+    setDraggedFromColumn(fromColumn);
+    e.dataTransfer.effectAllowed = "move";
+    e.dataTransfer.setData("text/html", e.target.outerHTML);
+    e.dataTransfer.setData("text/plain", cardId);
+  }, []);
 
-    const { source, destination } = result;
+  const handleDragOver = useCallback((e) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = "move";
+  }, []);
 
-    if (source.droppableId === "left" && destination.droppableId === "left") {
-      setLeftCards((prev) => {
-        const reordered = Array.from(prev);
-        const [moved] = reordered.splice(source.index, 1);
-        reordered.splice(destination.index, 0, moved);
-        return reordered;
-      });
-    }
+  const handleDrop = useCallback(
+    (e, targetColumn, targetIndex) => {
+      e.preventDefault();
 
-    if (source.droppableId === "right" && destination.droppableId === "right") {
-      setRightCards((prev) => {
-        const reordered = Array.from(prev);
-        const [moved] = reordered.splice(source.index, 1);
-        reordered.splice(destination.index, 0, moved);
-        return reordered;
-      });
-    }
+      if (!draggedItem || !draggedFromColumn) return;
+
+      const sourceColumn = draggedFromColumn;
+      const draggedCardId = draggedItem;
+
+      // Only allow reordering within the same column
+      if (sourceColumn !== targetColumn) {
+        setDraggedItem(null);
+        setDraggedFromColumn(null);
+        return;
+      }
+
+      if (sourceColumn === "left") {
+        setLeftCards((prev) => {
+          const draggedCardIndex = prev.findIndex(
+            (card) => card.id === draggedCardId
+          );
+          if (draggedCardIndex === -1) return prev;
+
+          const newCards = [...prev];
+          const [draggedCard] = newCards.splice(draggedCardIndex, 1);
+          newCards.splice(targetIndex, 0, draggedCard);
+          return newCards;
+        });
+      } else if (sourceColumn === "right") {
+        setRightCards((prev) => {
+          const draggedCardIndex = prev.findIndex(
+            (card) => card.id === draggedCardId
+          );
+          if (draggedCardIndex === -1) return prev;
+
+          const newCards = [...prev];
+          const [draggedCard] = newCards.splice(draggedCardIndex, 1);
+          newCards.splice(targetIndex, 0, draggedCard);
+          return newCards;
+        });
+      }
+
+      setDraggedItem(null);
+      setDraggedFromColumn(null);
+    },
+    [draggedItem, draggedFromColumn]
+  );
+
+  const handleDragEnd = useCallback(() => {
+    setDraggedItem(null);
+    setDraggedFromColumn(null);
   }, []);
 
   return (
@@ -191,59 +235,45 @@ const Dashboard = () => {
       <DashboardHeader title="Home" showSearch={false} />
       <hr />
 
-      <DragDropContext onDragEnd={handleDragEnd}>
-        <div className="dashboard-content">
-          <Droppable droppableId="left">
-            {(provided) => (
-              <div
-                className="dashboard-left"
-                ref={provided.innerRef}
-                {...provided.droppableProps}
-              >
-                {leftCards.map((card, index) => (
-                  <Draggable key={card.id} draggableId={card.id} index={index}>
-                    {(provided) => (
-                      <div
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                      >
-                        {card.content}
-                      </div>
-                    )}
-                  </Draggable>
-                ))}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-
-          <Droppable droppableId="right">
-            {(provided) => (
-              <div
-                className="dashboard-right"
-                ref={provided.innerRef}
-                {...provided.droppableProps}
-              >
-                {rightCards.map((card, index) => (
-                  <Draggable key={card.id} draggableId={card.id} index={index}>
-                    {(provided) => (
-                      <div
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                      >
-                        {card.content}
-                      </div>
-                    )}
-                  </Draggable>
-                ))}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
+      <div className="dashboard-content">
+        <div className="dashboard-left">
+          {leftCards.map((card, index) => (
+            <div
+              key={card.id}
+              draggable
+              onDragStart={(e) => handleDragStart(e, card.id, "left")}
+              onDragOver={handleDragOver}
+              onDrop={(e) => handleDrop(e, "left", index)}
+              onDragEnd={handleDragEnd}
+              style={{
+                cursor: "grab",
+                opacity: draggedItem === card.id ? 0.5 : 1,
+              }}
+            >
+              {card.content}
+            </div>
+          ))}
         </div>
-      </DragDropContext>
+
+        <div className="dashboard-right">
+          {rightCards.map((card, index) => (
+            <div
+              key={card.id}
+              draggable
+              onDragStart={(e) => handleDragStart(e, card.id, "right")}
+              onDragOver={handleDragOver}
+              onDrop={(e) => handleDrop(e, "right", index)}
+              onDragEnd={handleDragEnd}
+              style={{
+                cursor: "grab",
+                opacity: draggedItem === card.id ? 0.5 : 1,
+              }}
+            >
+              {card.content}
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
