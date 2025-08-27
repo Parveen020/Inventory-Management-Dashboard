@@ -29,11 +29,22 @@ const upload = multer({
   },
 });
 
+const csvUpload = multer({
+  storage: storage,
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype === "text/csv") {
+      cb(null, true);
+    } else {
+      cb(new Error("Only CSV files are allowed"), false);
+    }
+  },
+});
+
 productRouter.get("/get-all-products", getAllProducts);
 productRouter.post("/add-single-product", upload.single("image"), addProduct);
 productRouter.post(
   "/add-multiple-product",
-  upload.single("csvFile"),
+  csvUpload.single("csvFile"),
   addProductsFromCSV
 );
 productRouter.put(
