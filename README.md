@@ -5,6 +5,10 @@ This project is a **full-stack web application** built with React (frontend) and
 
 ---
 
+⚠️ Note: After starting the project, please allow up to 30 seconds for the backend services to initialize and fetch data from the database. The website may take a short time before displaying the content properly.
+
+---
+
 ## ⚙️ Setup Instructions
 
 ### 1️⃣ Clone or Download Repository
